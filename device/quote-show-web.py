@@ -1,12 +1,12 @@
 import gc
 import random
 from urllib import urequest
+import urequests
 import inky_frame
 
 gc.collect()
 
-URL = "http://localhost:8000/quote.txt"
-FILE = "quote.txt"
+URL = "https://raw.githubusercontent.com/nateProjects/LitClockPaPiRus/main/quote.txt"
 
 UPDATE_INTERVAL = 60
 
@@ -17,11 +17,8 @@ quote = []
 def update():
     global quote
 
-
-import requests
-
 # Retrieve the contents of the web page
-response = requests.get("http://localhost:8000/quote.txt")
+response = urequests.get(URL)
 
 # Check for successful response
 if response.status_code == 200:
@@ -34,12 +31,14 @@ if response.status_code == 200:
     quote[2] = quote[2].replace('""', '"')      
 
     # Print the only line of text
-    print(lines[0])
+    print(quote)
 
 else:
     print("Error retrieving web page:", response.status_code)
 
-    gc.collect()
+response.close()
+
+gc.collect()
 
 def draw():
     graphics.set_pen(1)
